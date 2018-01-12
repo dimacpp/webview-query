@@ -1,0 +1,21 @@
+{
+    "name": "webview-query",
+    "version": "0.0.1",
+    "description": "Utility node.js library for Chrome Webview traversal and manipulation.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "eslint": "./node_modules/.bin/eslint index.js"
+    },
+    "keywords": [
+        "chrome",
+        "webview"
+    ],
+    "author": "dimacpp <dimacpp@gmail.com> (dimacpp.com)",
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^4.15.0",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.8.0"
+    }
+}
