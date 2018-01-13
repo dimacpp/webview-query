@@ -1,0 +1,29 @@
+{
+    "name": "webview-query-tests",
+    "description": "Nw.js app to test webview-query library",
+    "version": "1.0.0",
+    "author": "dimacpp@gmail.com",
+    "main": "index.html",
+    "webview": {
+        "partitions": [
+            {
+                "name": "trusted",
+                "accessible_resources": [
+                    "<all_urls>"
+                ]
+            }
+        ]
+    },
+    "window": {
+        "width": 800,
+        "height": 700,
+        "position": "center",
+        "resizable": true
+    },
+    "scripts": {
+        "start": "./node_modules/.bin/nw"
+    },
+    "dependencies": {
+        "nw": "^0.27"
+    }
+}
