@@ -10,6 +10,11 @@
     "license": "MIT",
     "author": "dimacpp <dimacpp@gmail.com> (dimacpp.com)",
     "main": "index.js",
+    "files": [
+        "index.js",
+        "README.md",
+        "LICENSE"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/dimacpp/webview-query.git"
