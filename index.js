@@ -19,7 +19,7 @@ class Webview {
                 /* eslint-enable */
             }, (results) => {
                 if (name && code) {
-                    [this.vars] = results;
+                    this.vars[name] = results[0];
                 }
 
                 return resolve();
@@ -47,6 +47,20 @@ class Webview {
     isLoaded(name) {
         return this.runJs(name, `
             return ['interactive', 'complete'].includes(document.readyState);
+        `);
+    }
+
+
+    getTitle() {
+        return this.runJs('title', `
+            return document.title;
+        `);
+    }
+
+
+    setTitle(title) {
+        return this.runJs(`
+            return document.title = '${title}';
         `);
     }
 
