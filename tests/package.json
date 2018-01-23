@@ -24,6 +24,7 @@
         "start": "./node_modules/.bin/nw"
     },
     "dependencies": {
-        "nw": "^0.27"
+        "nw": "^0.27",
+        "chai": "^4.1.2"
     }
 }
