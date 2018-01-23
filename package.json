@@ -1,6 +1,6 @@
 {
     "name": "webview-query",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Utility node.js library for Chrome Webview traversal and manipulation.",
     "keywords": [
         "chrome",
@@ -24,7 +24,7 @@
     },
     "homepage": "https://github.com/dimacpp/webview-query",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "echo \"See tests directory\"",
         "eslint": "./node_modules/.bin/eslint index.js"
     },
     "devDependencies": {

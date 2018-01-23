@@ -1,145 +1,210 @@
 class Webview {
     constructor(webview) {
+        if (!webview) throw new Error('Invalid webview param');
         this.webview = webview;
-        this.vars = {};
-        this.queue = [];
     }
 
-    runJs(name, code) {
-        const js = code || name;
 
-        const promise = new Promise((resolve) => {
+    runJs(code) {
+        return new Promise((resolve, reject) => {
             this.webview.executeScript({
                 /* eslint-disable */
                 code: `
                     ;(function() {
-                        ${js}
+                        ${code}
                     })();
                 `
                 /* eslint-enable */
             }, (results) => {
-                if (name && code) {
-                    this.vars[name] = results[0];
+                if (chrome.runtime.lastError) {
+                    return reject(new Error(`Chrome last error: ${chrome.runtime.lastError.message || 'undefined'}`));
                 }
 
-                return resolve();
+                return resolve(results[0]);
             });
         }); // Promise
 
-        this.queue.push(promise);
-        return this;
-    }
-
-
-    tap(callback) {
-        Promise.all(this.queue)
-            .then(() => {
-                callback(this.vars);
-            });
-
-        return this;
     }
 
 
     // API
 
 
-    isLoaded(name) {
-        return this.runJs(name, `
-            return ['interactive', 'complete'].includes(document.readyState);
-        `);
-    }
-
-
-    getTitle() {
-        return this.runJs('title', `
-            return document.title;
-        `);
-    }
-
-
-    setTitle(title) {
+    title(value) {
+        if (typeof value === 'undefined') {
+            return this.runJs(`
+                return document.title;
+            `);
+        }
+        
         return this.runJs(`
-            return document.title = '${title}';
+            document.title = '${value}';
         `);
     }
 
 
-    isExist(name, selector) {
-        return this.runJs(name, `
+    location(value) {
+        if (typeof value === 'undefined') {
+            return this.runJs(`
+                return location.href;
+            `);
+        }
+
+        return new Promise((resolve, reject) => {
+            if (!value) {
+                return reject(new Error('Invalid url'));
+            }
+
+            this.webview.src = value;
+            this.webview.addEventListener('loadstop', () => {
+                return resolve();
+            }, {
+                once: true
+            });
+        });
+    }
+
+
+    exists(selector) {
+        return this.runJs(`
             return (document.querySelectorAll('${selector}').length > 0);
         `);
     }
 
 
-    getLength(name, selector) {
-        return this.runJs(name, `
-            return document.querySelectorAll('${selector}').length;
-        `);
-    }
-
-
-    getValue(name, selector) {
-        return this.runJs(name, `
-            return (document.querySelector('${selector}') || { }).value;
-        `);
-    }
-
-
-    setValue(selector, value) {
+    length(selector) {
+        const _s = this._escapeWrongQuotes(selector);
         return this.runJs(`
-            document.querySelectorAll('${selector}')
-                .forEach(el => {
-                    el.value = '${value}';
-                });
+            return document.querySelectorAll('${_s}').length;
         `);
     }
 
 
-    getText(name, selector) {
-        return this.runJs(name, `
+    val(selector, value) {
+        const _s = this._escapeWrongQuotes(selector);
+        if (typeof value === 'undefined') {
+            return this.runJs(`
+                const el = document.querySelector('${_s}');
+                const val = (el !== null ? el.value : '');
+                return (typeof val === 'string' ? val : '');
+            `);
+        }
 
-            let _getText = el => {
+        return this.runJs(`
+            document.querySelectorAll('${_s}')
+                .forEach(el => el.value = '${value}');
+        `);
+    }
 
-                if (!el) return '';
 
-                if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(el.nodeType)) {
+    attr(selector, attribute, value) {
+        const _s = this._escapeWrongQuotes(selector);
+        if (typeof value === 'undefined') {
+            return this.runJs(`
+                const el = document.querySelector('${_s}');
+                const val = (el !== null ? el.getAttribute('${attribute}'): '');
+                return (typeof val === 'string' ? val: '');
+            `);
+        }
 
-                    if (typeof el.textContent === 'string') {
-                        return el.textContent;
+        return this.runJs(`
+            document.querySelectorAll('${_s}')
+                .forEach(el => el.setAttribute('${attribute}', '${value}'));
+        `);
+    }
+
+
+    text(selector, value) {
+        const _s = this._escapeWrongQuotes(selector);
+        if (typeof value === 'undefined') {
+            return this.runJs(`
+                let _getText = el => {
+
+                    if (!el) return '';
+
+                    if ([Node.ELEMENT_NODE, Node.DOCUMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(el.nodeType)) {
+
+                        if (typeof el.textContent === 'string') {
+                            return el.textContent;
+                        } 
+                    
+                        let result = [];
+
+                        for (el = el.firstChild; el; el = el.nextSibling) {
+                            result.push(_getText(el));
+                        }
+
+                        return result.join('');
+                    }
+
+                    if ([Node.TEXT_NODE, Node.CDATA_SECTION_NODE].includes(el.nodeType)) {
+                        return el.nodeValue;
+                    }
+
+                    if (!el.nodeType) {
+                    
+                        let node;
+                        let i = 0;
+                        let result =[];
+
+                        while (node = el[i++]) {
+                            result.push(_getText(node));
+                        }
+
+                        return result.join('');
                     } 
-                    
-                    let result = [];
 
-                    for (el = el.firstChild; el; el = el.nextSibling) {
-                        result.push(_getText(el));
-                    }
+                };
 
-                    return result.join('');
-                }
+                return _getText(document.querySelectorAll('${_s}'));
+            `);
+        }
 
-                if ([Node.TEXT_NODE, Node.CDATA_SECTION_NODE].includes(el.nodeType)) {
-                    return el.nodeValue;
-                }
-
-                if (!el.nodeType) {
-                    
-                    let node;
-                    let i = 0;
-                    let result =[];
-
-                    while (node = el[i++]) {
-                        result.push(_getText(node));
-                    }
-
-                    return result.join('');
-                } 
-
-            };
-
-            return _getText(document.querySelectorAll('${selector}'));
+        return this.runJs(`
+            document.querySelectorAll('${_s}')
+                .forEach(el => el.textContent = '${value}');
         `);
     }
+
+
+    html(selector, value, options) {
+        const _s = this._escapeWrongQuotes(selector);
+        const opts = (typeof options === 'undefined' ? value : options);
+        const _method = ((typeof opts === 'object' && opts.outer === true) ? 'outerHTML' : 'innerHTML');
+
+        if (typeof value !== 'string') {
+            return this.runJs(`
+                return (document.querySelector('${_s}') || { }).${_method};
+            `);
+        }
+
+        return this.runJs(`
+            document.querySelectorAll('${_s}')
+                .forEach(el => el.${_method} = '${value}');
+        `);
+    }
+
+
+    click(selector) {
+        const _s = this._escapeWrongQuotes(selector);
+        return this.runJs(`
+            document.querySelectorAll('${_s}')
+                .forEach(el => el.click());
+        `);
+    }
+
+
+    // private
+
+
+    _escapeWrongQuotes(selector) {
+        if (typeof selector === 'string') {
+            return selector.replace(/['`]/g, '"')
+        }
+    }
+
 }
 
-module.exports = webview => new Webview(webview);
+module.exports = {
+    Webview
+};
