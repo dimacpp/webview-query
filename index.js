@@ -1,3 +1,5 @@
+/* global chrome */
+
 class Webview {
     constructor(webview) {
         if (!webview) throw new Error('Invalid webview param');
@@ -23,7 +25,6 @@ class Webview {
                 return resolve(results[0]);
             });
         }); // Promise
-
     }
 
 
@@ -36,7 +37,7 @@ class Webview {
                 return document.title;
             `);
         }
-        
+
         return this.runJs(`
             document.title = '${value}';
         `);
@@ -50,15 +51,9 @@ class Webview {
             `);
         }
 
-        return new Promise((resolve, reject) => {
-            if (!value) {
-                return reject(new Error('Invalid url'));
-            }
-
+        return new Promise((resolve) => {
             this.webview.src = value;
-            this.webview.addEventListener('loadstop', () => {
-                return resolve();
-            }, {
+            this.webview.addEventListener('loadstop', resolve, {
                 once: true
             });
         });
@@ -73,7 +68,7 @@ class Webview {
 
 
     length(selector) {
-        const _s = this._escapeWrongQuotes(selector);
+        const _s = Webview.escapeWrongQuotes(selector);
         return this.runJs(`
             return document.querySelectorAll('${_s}').length;
         `);
@@ -81,7 +76,7 @@ class Webview {
 
 
     val(selector, value) {
-        const _s = this._escapeWrongQuotes(selector);
+        const _s = Webview.escapeWrongQuotes(selector);
         if (typeof value === 'undefined') {
             return this.runJs(`
                 const el = document.querySelector('${_s}');
@@ -98,7 +93,7 @@ class Webview {
 
 
     attr(selector, attribute, value) {
-        const _s = this._escapeWrongQuotes(selector);
+        const _s = Webview.escapeWrongQuotes(selector);
         if (typeof value === 'undefined') {
             return this.runJs(`
                 const el = document.querySelector('${_s}');
@@ -115,7 +110,7 @@ class Webview {
 
 
     text(selector, value) {
-        const _s = this._escapeWrongQuotes(selector);
+        const _s = Webview.escapeWrongQuotes(selector);
         if (typeof value === 'undefined') {
             return this.runJs(`
                 let _getText = el => {
@@ -168,25 +163,25 @@ class Webview {
 
 
     html(selector, value, options) {
-        const _s = this._escapeWrongQuotes(selector);
+        const _s = Webview.escapeWrongQuotes(selector);
         const opts = (typeof options === 'undefined' ? value : options);
-        const _method = ((typeof opts === 'object' && opts.outer === true) ? 'outerHTML' : 'innerHTML');
+        const _m = ((typeof opts === 'object' && opts.outer === true) ? 'outerHTML' : 'innerHTML');
 
         if (typeof value !== 'string') {
             return this.runJs(`
-                return (document.querySelector('${_s}') || { }).${_method};
+                return (document.querySelector('${_s}') || { }).${_m};
             `);
         }
 
         return this.runJs(`
             document.querySelectorAll('${_s}')
-                .forEach(el => el.${_method} = '${value}');
+                .forEach(el => el.${_m} = '${value}');
         `);
     }
 
 
     click(selector) {
-        const _s = this._escapeWrongQuotes(selector);
+        const _s = Webview.escapeWrongQuotes(selector);
         return this.runJs(`
             document.querySelectorAll('${_s}')
                 .forEach(el => el.click());
@@ -194,15 +189,12 @@ class Webview {
     }
 
 
-    // private
+    // utility methods
 
 
-    _escapeWrongQuotes(selector) {
-        if (typeof selector === 'string') {
-            return selector.replace(/['`]/g, '"')
-        }
+    static escapeWrongQuotes(selector) {
+        return (typeof selector === 'string' ? selector.replace(/['`]/g, '"') : selector);
     }
-
 }
 
 module.exports = {
