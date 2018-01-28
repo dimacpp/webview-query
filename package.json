@@ -1,6 +1,6 @@
 {
     "name": "webview-query",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Utility node.js library for Chrome webview traversal and manipulation",
     "keywords": [
         "chrome",

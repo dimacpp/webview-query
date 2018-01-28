@@ -84,12 +84,8 @@ class Webview {
             `);
         }
 
-        return new Promise((resolve) => {
-            this.webview.src = value;
-            this.webview.addEventListener('loadstop', resolve, {
-                once: true
-            });
-        });
+        this.webview.src = value;
+        return Promise.race([this.waitForLoadstart(), Webview.waitForTimeout()]);
     }
 
 
@@ -288,6 +284,21 @@ class Webview {
 
 
     /**
+     * Help to wait for loadstop-event of the webview.
+     * @param {string} selector CSS selector.
+     * @returns {Promise}
+     * @private
+     */
+    waitForLoadstart() {
+        return new Promise((resolve) => {
+            this.webview.addEventListener('loadstop', resolve, {
+                once: true
+            });
+        }); // Promise
+    }
+
+
+    /**
      * Replaces any single and backtick quote to double quote.
      * @param {string} selector CSS selector.
      * @returns {string}
@@ -296,6 +307,19 @@ class Webview {
      */
     static replaceWrongQuotes(selector) {
         return (typeof selector === 'string' ? selector.replace(/['`]/g, '"') : selector);
+    }
+
+
+    /**
+     * Timeout to prevent freezing.
+     * @returns {Promise}
+     * @static
+     * @private
+     */
+    static waitForTimeout() {
+        return new Promise((resolve) => {
+            setTimeout(resolve, 5000);
+        }); // Promise
     }
 }
 
