@@ -29,9 +29,7 @@
         "jsdoc": "./node_modules/.bin/jsdoc2md index.js"
     },
     "devDependencies": {
-        "eslint": "^4.15.0",
-        "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-import": "^2.8.0",
+        "eslint": "^5.5.0",
         "jsdoc-to-markdown": "^4.0.1"
     }
 }
