@@ -1,19 +1,19 @@
 ﻿# webview-query
 Utility node.js library for [Chrome Webview](https://developer.chrome.com/apps/tags/webview) traversal and manipulation.
 
-[![Gemnasium](https://img.shields.io/gemnasium/mathiasbynens/he.svg)]()
+[![no dependencies](https://img.shields.io/badge/dependencies-none-green.svg)]()
 
 ## Install
 `npm install webview-query --save`
-    
+
 ## Example
 
 For example, you have NW.js app with webview tag within.
-    
+
 `html:`
 
     <webview id="view1"></webview>
-    
+
 `js:`
 
     const { Webview } = require('webview-query');
@@ -22,9 +22,9 @@ For example, you have NW.js app with webview tag within.
     // inside async function:
 
     await webview.location('https://github.com');
-    console.log(await webview.title()); 
+    console.log(await webview.title());
     // -> "The world's leading software development platform · GitHub"
-        
+
     console.log(await webview.text('.jumbotron h1'));
     // -> "Built for developers"
 
@@ -48,7 +48,7 @@ For example, you have NW.js app with webview tag within.
 <a name="Webview"></a>
 
 ## Webview
-**Kind**: global class  
+**Kind**: global class
 
 * [Webview](#Webview)
     * [new Webview(webview)](#new_Webview_new)
@@ -83,14 +83,14 @@ Webview is a class for Chrome webview promise-based traversal and manipulation.
 <a name="Webview+webview"></a>
 
 ### webview.webview : [<code>webview</code>](#external_webview)
-**Kind**: instance property of [<code>Webview</code>](#Webview)  
+**Kind**: instance property of [<code>Webview</code>](#Webview)
 <a name="Webview+runJs"></a>
 
 ### webview.runJs(code) ⇒ <code>Promise</code>
 Run arbitrary javascript code inside webview context.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise</code> - Promise object represents the result of the script.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise</code> - Promise object represents the result of the script.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -101,14 +101,14 @@ Run arbitrary javascript code inside webview context.
 ### webview.title() ⇒ <code>Promise.&lt;string&gt;</code>
 Get webview document title.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents the document title.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents the document title.
 <a name="Webview+title"></a>
 
 ### webview.title(value) ⇒ <code>Promise</code>
 Set webview document new title.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -119,14 +119,14 @@ Set webview document new title.
 ### webview.location() ⇒ <code>Promise.&lt;string&gt;</code>
 Get webview current location.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents current location.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents current location.
 <a name="Webview+location"></a>
 
 ### webview.location(value) ⇒ <code>Promise</code>
 Set webview new location.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -137,8 +137,8 @@ Set webview new location.
 ### webview.exists(selector) ⇒ <code>Promise.&lt;boolean&gt;</code>
 Check the existence of an element(s).
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;boolean&gt;</code> - Promise object represents the element(s) existence.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - Promise object represents the element(s) existence.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -149,8 +149,8 @@ Check the existence of an element(s).
 ### webview.length(selector) ⇒ <code>Promise.&lt;number&gt;</code>
 Return number of elements matched by selector.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;number&gt;</code> - Promise object represents the number of elements currently matched..  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;number&gt;</code> - Promise object represents the number of elements currently matched..
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -161,8 +161,8 @@ Return number of elements matched by selector.
 ### webview.val(selector) ⇒ <code>Promise.&lt;string&gt;</code>
 Get the current value of the first element in the set of matched elements.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents the current value of the first element.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents the current value of the first element.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -173,7 +173,7 @@ Get the current value of the first element in the set of matched elements.
 ### webview.val(selector, value) ⇒ <code>Promise</code>
 Set the value of every matched element.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -185,8 +185,8 @@ Set the value of every matched element.
 ### webview.attr(selector, attribute) ⇒ <code>Promise.&lt;string&gt;</code>
 Get the value of an attribute for the first element in the set of matched elements.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents the attribute value of the first element.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents the attribute value of the first element.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -198,7 +198,7 @@ Get the value of an attribute for the first element in the set of matched elemen
 ### webview.attr(selector, attribute, value) ⇒ <code>Promise</code>
 Set an attribute for every matched element.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -211,8 +211,8 @@ Set an attribute for every matched element.
 ### webview.text(selector) ⇒ <code>Promise.&lt;string&gt;</code>
 Get the combined text contents of each element in the set of matched elements, including their descendants.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents a string containing the combined text of all matched elements.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents a string containing the combined text of all matched elements.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -223,7 +223,7 @@ Get the combined text contents of each element in the set of matched elements, i
 ### webview.text(selector, value) ⇒ <code>Promise</code>
 Set the text contents of the matched elements.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -235,8 +235,8 @@ Set the text contents of the matched elements.
 ### webview.html(selector, [options]) ⇒ <code>Promise.&lt;string&gt;</code>
 Get the HTML contents of the first element in the set of matched elements.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
-**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents a string containing inner or outer HTML for the first element.  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
+**Returns**: <code>Promise.&lt;string&gt;</code> - Promise object represents a string containing inner or outer HTML for the first element.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -249,7 +249,7 @@ Get the HTML contents of the first element in the set of matched elements.
 ### webview.html(selector, value, [options]) ⇒ <code>Promise</code>
 Set the HTML contents of every matched element.
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -263,7 +263,7 @@ Set the HTML contents of every matched element.
 ### webview.click(selector) ⇒ <code>Promise</code>
 Execute click action for the matched element(s).
 
-**Kind**: instance method of [<code>Webview</code>](#Webview)  
+**Kind**: instance method of [<code>Webview</code>](#Webview)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -274,5 +274,5 @@ Execute click action for the matched element(s).
 ## webview
 Chrome webview element
 
-**Kind**: global external  
-**See**: [https://developer.chrome.com/apps/tags/webview](https://developer.chrome.com/apps/tags/webview)  
+**Kind**: global external
+**See**: [https://developer.chrome.com/apps/tags/webview](https://developer.chrome.com/apps/tags/webview)
