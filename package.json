@@ -8,7 +8,7 @@
         "query"
     ],
     "license": "MIT",
-    "author": "dimacpp <dimacpp@gmail.com> (dimacpp.com)",
+    "author": "dimacpp <dimacpp@gmail.com>",
     "main": "index.js",
     "files": [
         "index.js",
