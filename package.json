@@ -1,6 +1,6 @@
 {
     "name": "webview-query",
-    "version": "0.0.3",
+    "version": "1.0.0",
     "description": "Utility node.js library for Chrome webview traversal and manipulation",
     "keywords": [
         "chrome",
@@ -26,8 +26,8 @@
     "scripts": {
         "test": "echo See tests directory",
         "jsdoc": "jsdoc2md index.js",
-        "eslint": "eslint ./src",
-        "eslint:fix": "eslint ./src --fix"
+        "eslint": "eslint index.js",
+        "eslint:fix": "eslint index.js --fix"
     },
     "devDependencies": {
         "eslint": "6.4.0",
