@@ -31,6 +31,7 @@
     },
     "devDependencies": {
         "eslint": "6.4.0",
+        "eslint-config-dimacpp": "1.0.0",
         "jsdoc-to-markdown": "5.0.1"
     }
 }
