@@ -24,12 +24,13 @@
     },
     "homepage": "https://github.com/dimacpp/webview-query",
     "scripts": {
-        "test": "echo \"See tests directory\"",
-        "eslint": "./node_modules/.bin/eslint index.js",
-        "jsdoc": "./node_modules/.bin/jsdoc2md index.js"
+        "test": "echo See tests directory",
+        "jsdoc": "jsdoc2md index.js",
+        "eslint": "eslint ./src",
+        "eslint:fix": "eslint ./src --fix"
     },
     "devDependencies": {
-        "eslint": "5.16.0",
-        "jsdoc-to-markdown": "5.0.0"
+        "eslint": "6.4.0",
+        "jsdoc-to-markdown": "5.0.1"
     }
 }
