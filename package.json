@@ -30,8 +30,8 @@
         "eslint:fix": "eslint index.js --fix"
     },
     "devDependencies": {
-        "eslint": "6.4.0",
-        "eslint-config-dimacpp": "1.0.0",
-        "jsdoc-to-markdown": "5.0.1"
+        "eslint": "6.8.0",
+        "eslint-config-dimacpp": "1.0.3",
+        "jsdoc-to-markdown": "5.0.3"
     }
 }
