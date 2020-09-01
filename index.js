@@ -33,11 +33,11 @@ class Webview {
           })();
         `,
       }, (results) => {
-        if (chrome.runtime.lastError) {
+        if (chrome && chrome.runtime && chrome.runtime.lastError) {
           return reject(new Error(`Chrome last error: ${chrome.runtime.lastError.message || 'undefined'}`));
         }
 
-        return resolve(results[0]);
+        return resolve(results && results[0]);
       });
     });
   }
@@ -312,13 +312,16 @@ class Webview {
 
   /**
    * Timeout to prevent freezing.
+   * @param {number} [timeoutMs] Timeout (msec, default is 5000).
    * @returns {Promise}
    * @static
    * @private
    */
-  static waitForTimeout() {
+  static waitForTimeout(timeoutMs = 5000) {
     return new Promise((resolve) => {
-      setTimeout(resolve, 5000);
+      setTimeout(() => {
+        return resolve('timeout');
+      }, timeoutMs);
     });
   }
 }
